@@ -149,3 +149,38 @@ ToastFuture showToastWidget(
 void dismissAllToast({bool showAnim = false}) {
   ToastManager().dismissAll(showAnim: showAnim);
 }
+
+OverlayEntry loadingOverlayEntry;
+showLoading({
+  Widget widget,
+  BuildContext context,
+}) {
+  context ??= _contextMap.values.first;
+  GlobalKey<__ToastContainerState> key = GlobalKey();
+  if (widget == null) {
+    widget = Text('加载中');
+  }
+  widget = Align(
+    child: widget,
+    alignment: Alignment.center,
+  );
+  if (loadingOverlayEntry != null) {
+    loadingOverlayEntry?.remove();
+    loadingOverlayEntry = null;
+  }
+  loadingOverlayEntry = OverlayEntry(builder: (ctx) {
+    return IgnorePointer(
+      key: key,
+      child: widget,
+    );
+  });
+  Overlay.of(context).insert(loadingOverlayEntry);
+}
+
+cancelLoading() {
+  // print('111111');
+  if (loadingOverlayEntry != null) {
+    loadingOverlayEntry?.remove();
+    loadingOverlayEntry = null;
+  }
+}
