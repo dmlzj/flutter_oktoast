@@ -1,27 +1,49 @@
 part of '../core/toast.dart';
 
 class OKToast extends StatefulWidget {
+  /// Usually should be [MaterialApp] or [CupertinoApp].
   final Widget child;
 
+  /// Default textStyle of [showToast].
   final TextStyle textStyle;
 
+  /// Default backgroundColor of [showToast].
   final Color backgroundColor;
 
+  /// Default radius of [showToast].
   final double radius;
 
+  /// Default align and padding of [showToast].
   final ToastPosition position;
 
+  /// Default textDirection of [showToast].
   final TextDirection textDirection;
 
+  /// Default dismissOtherOnShow of [showToast].
   final bool dismissOtherOnShow;
 
+  /// When the screen size changes due to the soft keyboard / rotation screen, toast will reposition.
   final bool movingOnWindowChange;
 
+  /// TDefault textAlign of [textPadding].
   final EdgeInsets textPadding;
 
+  /// Default textAlign of [showToast].
   final TextAlign textAlign;
 
+  /// Whether toast can respond to click events.
   final bool handleTouth;
+
+  final Duration duration;
+
+  /// The animation builder of show/hide toast.
+  final OKToastAnimationBuilder animationBuilder;
+
+  /// The animation duration of show/hide toast.
+  final Duration animationDuration;
+
+  /// The animation curve of show/hide toast.
+  final Curve animationCurve;
 
   const OKToast({
     Key key,
@@ -29,13 +51,17 @@ class OKToast extends StatefulWidget {
     this.textStyle,
     this.radius = 10.0,
     this.position = ToastPosition.center,
-    this.textDirection,
+    this.textDirection = TextDirection.ltr,
     this.dismissOtherOnShow = false,
     this.movingOnWindowChange = true,
     Color backgroundColor,
     this.textPadding,
     this.textAlign,
     this.handleTouth = false,
+    this.animationBuilder,
+    this.animationDuration = const Duration(milliseconds: 250),
+    this.animationCurve,
+    this.duration,
   })  : this.backgroundColor = backgroundColor ?? const Color(0xDD000000),
         super(key: key);
 
@@ -71,20 +97,7 @@ class _OKToastState extends State<OKToast> {
     TextDirection direction = widget.textDirection ?? TextDirection.ltr;
 
     Widget w = Directionality(
-      child: Stack(children: <Widget>[
-        overlay,
-        Positioned(
-          left: 0.0,
-          right: 0.0,
-          top: 0.0,
-          bottom: 0.0,
-          child: IgnorePointer(
-            child: Container(
-              color: Colors.black.withOpacity(0.0),
-            ),
-          ),
-        )
-      ]),
+      child: overlay,
       textDirection: direction,
     );
 
@@ -117,6 +130,10 @@ class _OKToastState extends State<OKToast> {
       textAlign: textAlign,
       textPadding: textPadding,
       handleTouch: widget.handleTouth,
+      animationBuilder: widget.animationBuilder,
+      animationDuration: widget.animationDuration,
+      animationCurve: widget.animationCurve,
+      duration: widget.duration,
     );
   }
 }

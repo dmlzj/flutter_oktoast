@@ -21,6 +21,14 @@ class _ToastTheme extends InheritedWidget {
 
   final bool handleTouch;
 
+  final OKToastAnimationBuilder animationBuilder;
+
+  final Duration animationDuration;
+
+  final Curve animationCurve;
+
+  final Duration duration;
+
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) => true;
 
@@ -36,9 +44,13 @@ class _ToastTheme extends InheritedWidget {
     TextDirection textDirection,
     this.handleTouch,
     Widget child,
+    this.animationBuilder,
+    this.animationDuration,
+    this.animationCurve,
+    this.duration,
   })  : textDirection = textDirection ?? TextDirection.ltr,
         super(child: child);
 
   static _ToastTheme of(BuildContext context) =>
-      context.inheritFromWidgetOfExactType(_ToastTheme);
+      context.dependOnInheritedWidgetOfExactType<_ToastTheme>();
 }

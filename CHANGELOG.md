@@ -1,5 +1,29 @@
 # Change log
 
+## 2.3.2
+
+Fixed a memory leak issue.
+
+## 2.3.1+1
+
+- Fix health for pub.
+
+## 2.3.1
+
+- Fix [#46](https://github.com/OpenFlutter/flutter_oktoast/issues/46).
+
+## 2.3.0
+
+New feature:
+
+- Add animation for show/hide the oktoast.
+
+## 2.2.1
+
+Fix:
+
+- `textAlign` of method `showToast`.
+
 ## 2.2.0
 
 New feature:

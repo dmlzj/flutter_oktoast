@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart'; // 1. import library
 
-void main() => runApp(new MyApp());
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
@@ -13,13 +13,17 @@ class MyApp extends StatelessWidget {
       textStyle: TextStyle(fontSize: 19.0, color: Colors.white),
       backgroundColor: Colors.grey,
       radius: 10.0,
-      child: new MaterialApp(
-        title: 'Flutter Demo',
-        theme: new ThemeData(
+      child: MaterialApp(
+        title: 'Demo for OKToast',
+        theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: new MyHomePage(),
+        home: MyHomePage(),
       ),
+      animationCurve: Curves.easeIn,
+      animationBuilder: Miui10AnimBuilder(),
+      animationDuration: Duration(milliseconds: 200),
+      duration: Duration(seconds: 3),
     );
   }
 }
@@ -28,7 +32,7 @@ class MyHomePage extends StatefulWidget {
   MyHomePage({Key key}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -37,19 +41,23 @@ class _MyHomePageState extends State<MyHomePage> {
   void _incrementCounter() {
     _counter++;
 
+    setState(() {});
+  }
+
+  void _showToast() {
     // 3.1 use showToast method
     showToast(
       "$_counter",
-      duration: Duration(seconds: 2),
       position: ToastPosition.bottom,
       backgroundColor: Colors.black.withOpacity(0.8),
       radius: 13.0,
       textStyle: TextStyle(fontSize: 18.0),
+      animationBuilder: Miui10AnimBuilder(),
     );
 
     showToast(
       "$_counter",
-      duration: Duration(seconds: 2),
+      duration: Duration(milliseconds: 3500),
       position: ToastPosition.top,
       backgroundColor: Colors.black.withOpacity(0.8),
       radius: 3.0,
@@ -82,46 +90,65 @@ class _MyHomePageState extends State<MyHomePage> {
     );
 
     // can use future
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(Duration(seconds: 2), () {
       toastFuture.dismiss(); // dismiss
     });
-
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("ktoast demo"),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Example for OKToast"),
       ),
       body: Stack(
         children: <Widget>[
-          new Center(
+          Center(
             child: ListView(
               children: <Widget>[
-                new Text(
+                Text(
                   'You have pushed the button this many times:',
                 ),
-                new Text(
+                Text(
                   '$_counter',
                   style: Theme.of(context).textTheme.display1,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: RaisedButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (ctx) => MyHomePage()));
-                    },
+                  child: Tooltip(
+                    message: "Toast status when using this to test routing.",
+                    child: RaisedButton(
+                      child: Text("New page"),
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (ctx) => MyHomePage()));
+                      },
+                    ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: RaisedButton(
-                    onPressed: _incrementCounter,
-                    child: Text('toast'),
+                  child: Tooltip(
+                    message: "Add number.",
+                    child: RaisedButton(
+                      onPressed: _incrementCounter,
+                      child: Text('Add'),
+                    ),
                   ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Tooltip(
+                    message: "Show toast.",
+                    child: RaisedButton(
+                      onPressed: _showToast,
+                      child: Text('Toast'),
+                    ),
+                  ),
+                ),
+                TextField(
+                  decoration: InputDecoration(
+                      hintText: "Use TextField to test the toast of softkey."),
                 ),
               ],
             ),
